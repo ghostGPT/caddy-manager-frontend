@@ -1,23 +1,39 @@
-import { createRouter, createWebHashHistory } from "vue-router";
+import { createRouter, createWebHistory } from "vue-router";
 import Style from "@/views/StyleView.vue";
 import Home from "@/views/HomeView.vue";
 
 const routes = [
   {
     meta: {
-      title: "Select style",
+      title: "Login",
     },
-    path: "/",
-    name: "style",
-    component: Style,
+    path: "/login",
+    name: "login",
+    component: () => import("@/views/LoginView.vue"),
   },
+  {
+    meta: {
+      title: "Oauth2 Callback",
+    },
+    path: "/oauth2-callback",
+    name: "oauth2-callback",
+    component: () => import("@/views/Oauth2CallbackView.vue"),
+  },
+  // {
+  //   meta: {
+  //     title: "Select style",
+  //   },
+  //   path: "/",
+  //   name: "style",
+  //   component: Style,
+  // },
   {
     // Document title tag
     // We combine it with defaultDocumentTitle set in `src/main.js` on router.afterEach hook
     meta: {
       title: "Dashboard",
     },
-    path: "/dashboard",
+    path: "/",
     name: "dashboard",
     component: Home,
   },
@@ -61,14 +77,7 @@ const routes = [
     name: "responsive",
     component: () => import("@/views/ResponsiveView.vue"),
   },
-  {
-    meta: {
-      title: "Login",
-    },
-    path: "/login",
-    name: "login",
-    component: () => import("@/views/LoginView.vue"),
-  },
+
   {
     meta: {
       title: "Error",
@@ -80,7 +89,7 @@ const routes = [
 ];
 
 const router = createRouter({
-  history: createWebHashHistory(),
+  history: createWebHistory(),
   routes,
   scrollBehavior(to, from, savedPosition) {
     return savedPosition || { top: 0 };

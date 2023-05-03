@@ -1,0 +1,5 @@
+:8080
+
+root * {$WWW_ROOT}
+try_files {path} /index.html
+file_server

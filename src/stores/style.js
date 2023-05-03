@@ -3,6 +3,9 @@ import * as styles from "@/styles";
 import { darkModeKey, styleKey } from "@/config";
 
 export const useStyleStore = defineStore("style", {
+  persist: {
+    enabled: true
+  },
   state: () => ({
     /* Styles */
     asideStyle: "",

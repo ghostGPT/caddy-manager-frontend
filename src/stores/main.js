@@ -1,12 +1,17 @@
 import { defineStore } from "pinia";
-import axios from "axios";
+import axios from "@/utils/axios";
+import router from "@/router";
 
 export const useMainStore = defineStore("main", {
+  persist: {
+    enabled: true
+  },
   state: () => ({
-    /* User */
+    userGitHubId: null,
     userName: null,
-    userEmail: null,
     userAvatar: null,
+    isAdmin: null,
+    token: null,
 
     /* Field focus with ctrl+k (to register only once) */
     isFieldFocusRegistered: false,
@@ -17,28 +22,39 @@ export const useMainStore = defineStore("main", {
   }),
   actions: {
     setUser(payload) {
-      if (payload.name) {
-        this.userName = payload.name;
-      }
-      if (payload.email) {
-        this.userEmail = payload.email;
-      }
-      if (payload.avatar) {
-        this.userAvatar = payload.avatar;
-      }
+      this.userName = payload?.name;
+      this.userAvatar = payload?.avatar;
+      this.userGitHubId = payload?.github_id;
+      this.isAdmin = payload?.is_admin;
+      this.token = payload?.token;
     },
 
-    fetch(sampleDataKey) {
+    oauth2Login() {
       axios
-        .get(`data-sources/${sampleDataKey}.json`)
-        .then((r) => {
-          if (r.data && r.data.data) {
-            this[sampleDataKey] = r.data.data;
-          }
+        .get(`/api/oauth2`)
+        .then((data) => {
+          localStorage.setItem("csrf_state_id", data.csrf_state_id);
+          window.location.href = data.auth_url;
         })
         .catch((error) => {
           alert(error.message);
         });
     },
+
+    oauth2Callback(code, state) {
+      axios
+        .post(`/api/oauth2`, {
+          code: code,
+          csrf_state: state,
+          csrf_state_id: localStorage.getItem("csrf_state_id"),
+        })
+        .then((data) => {
+          this.setUser(data);
+          router.push("/");
+        })
+        .catch((error) => {
+          alert(error.message);
+        });
+    }
   },
 });
