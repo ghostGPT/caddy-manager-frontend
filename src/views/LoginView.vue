@@ -16,7 +16,7 @@ const login = () => {
 <template>
   <LayoutGuest>
     <SectionFullScreen bg="purplePink">
-      <BaseButton @click="login()" :icon="mdiGithub" color="danger" label="Login With GitHub" />
+      <BaseButton @click="login()" :icon="mdiGithub" color="contrast" label="Login With GitHub" />
     </SectionFullScreen>
   </LayoutGuest>
 </template>

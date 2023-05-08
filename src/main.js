@@ -1,21 +1,35 @@
 import { createApp } from "vue";
 import { createPinia } from "pinia";
+import axios from "axios";
+import piniaPersist from 'pinia-plugin-persist'
 
 import App from "./App.vue";
 import router from "./router";
 import { useMainStore } from "@/stores/main.js";
 import { useStyleStore } from "@/stores/style.js";
 import { darkModeKey, styleKey } from "@/config.js";
-import piniaPersist from 'pinia-plugin-persist'
 
 import "./css/main.css";
+
+const app = createApp(App);
+
+app.mixin({
+  methods: {
+    formatBytes(bytes, decimals = 2) {
+      if (bytes === 0) return "0 Bytes";
+      const k = 1024;
+      const dm = decimals < 0 ? 0 : decimals;
+      const sizes = ["Bytes", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"];
+      const i = Math.floor(Math.log(bytes) / Math.log(k));
+      return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + " " + sizes[i];
+    }
+  }
+})
 
 /* Init Pinia */
 const pinia = createPinia();
 pinia.use(piniaPersist)
-
-/* Create Vue app */
-createApp(App).use(router).use(pinia).mount("#app");
+app.use(pinia);
 
 /* Init Pinia stores */
 const mainStore = useMainStore(pinia);
@@ -33,20 +47,22 @@ if (
   styleStore.setDarkMode(true);
 }
 
-/* Default title tag */
-const defaultDocumentTitle = "Admin One Vue 3 Tailwind";
+axios.get("/api/site/config").then((data) => {
+  const defaultDocumentTitle = data.data.data.site_name;
 
-router.beforeEach((to, from, next) => {
-  if (["login", "oauth2-callback"].indexOf(to.name) == -1 && !mainStore.userName) {
-    next({ name: "login" });
-  } else {
-    next();
-  }
-});
+  router.beforeEach((to, from, next) => {
+    if (["login", "oauth2-callback"].indexOf(to.name) == -1 && !mainStore.user?.token) {
+      next({ name: "login" });
+    } else {
+      next();
+    }
+  });
 
-/* Set document title from route meta */
-router.afterEach((to) => {
-  document.title = to.meta?.title
-    ? `${to.meta.title} — ${defaultDocumentTitle}`
-    : defaultDocumentTitle;
+  router.afterEach((to) => {
+    document.title = to.meta?.title
+      ? `${to.meta.title} — ${defaultDocumentTitle}`
+      : defaultDocumentTitle;
+  });
+
+  app.use(router).mount("#app");
 });

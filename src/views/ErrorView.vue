@@ -4,6 +4,7 @@ import CardBox from "@/components/CardBox.vue";
 import BaseButton from "@/components/BaseButton.vue";
 import BaseButtons from "@/components/BaseButtons.vue";
 import LayoutGuest from "@/layouts/LayoutGuest.vue";
+import router from "@/router";
 </script>
 
 <template>
@@ -18,7 +19,7 @@ import LayoutGuest from "@/layouts/LayoutGuest.vue";
 
         <template #footer>
           <BaseButtons>
-            <BaseButton label="Done" to="/dashboard" color="danger" />
+            <BaseButton label="Go back" @click="router.back()" color="danger" />
           </BaseButtons>
         </template>
       </CardBox>

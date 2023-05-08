@@ -19,14 +19,6 @@ const routes = [
     name: "oauth2-callback",
     component: () => import("@/views/Oauth2CallbackView.vue"),
   },
-  // {
-  //   meta: {
-  //     title: "Select style",
-  //   },
-  //   path: "/",
-  //   name: "style",
-  //   component: Style,
-  // },
   {
     // Document title tag
     // We combine it with defaultDocumentTitle set in `src/main.js` on router.afterEach hook
@@ -39,51 +31,33 @@ const routes = [
   },
   {
     meta: {
-      title: "Tables",
+      title: "Nodes",
     },
-    path: "/tables",
-    name: "tables",
-    component: () => import("@/views/TablesView.vue"),
+    path: "/nodes",
+    name: "nodes",
+    component: () => import("@/views/NodesView.vue"),
   },
   {
     meta: {
-      title: "Forms",
+      title: "Plans",
     },
-    path: "/forms",
-    name: "forms",
-    component: () => import("@/views/FormsView.vue"),
+    path: "/plans",
+    name: "plans",
+    component: () => import("@/views/PlansView.vue"),
   },
   {
     meta: {
-      title: "Profile",
+      title: "Users",
     },
-    path: "/profile",
-    name: "profile",
-    component: () => import("@/views/ProfileView.vue"),
+    path: "/users",
+    name: "users",
+    component: () => import("@/views/UsersView.vue"),
   },
-  {
-    meta: {
-      title: "Ui",
-    },
-    path: "/ui",
-    name: "ui",
-    component: () => import("@/views/UiView.vue"),
-  },
-  {
-    meta: {
-      title: "Responsive layout",
-    },
-    path: "/responsive",
-    name: "responsive",
-    component: () => import("@/views/ResponsiveView.vue"),
-  },
-
   {
     meta: {
       title: "Error",
     },
-    path: "/error",
-    name: "error",
+    path: '/:pathMatch(.*)*',
     component: () => import("@/views/ErrorView.vue"),
   },
 ];

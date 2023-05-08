@@ -24,7 +24,7 @@ mainStore.oauth2Callback(code, state);
     <SectionFullScreen bg="purplePink">
       <div class="text-center">
         <h1>The page will be automatically redirected.</h1>
-        <BaseButton class="mt-4" @click="backToLogin()" color="danger" label="Back to login" />
+        <BaseButton class="mt-4" @click="backToLogin()" color="contrast" label="Back to login" />
       </div>
     </SectionFullScreen>
   </LayoutGuest>

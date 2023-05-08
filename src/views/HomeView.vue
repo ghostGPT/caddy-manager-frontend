@@ -6,6 +6,7 @@ import {
   mdiCartOutline,
   mdiChartTimelineVariant,
   mdiMonitorCellphone,
+  mdiMonitor,
   mdiReload,
   mdiGithub,
   mdiChartPie,
@@ -15,7 +16,7 @@ import LineChart from "@/components/Charts/LineChart.vue";
 import SectionMain from "@/components/SectionMain.vue";
 import CardBoxWidget from "@/components/CardBoxWidget.vue";
 import CardBox from "@/components/CardBox.vue";
-import TableSampleClients from "@/components/TableSampleClients.vue";
+import TableNodes from "@/components/TableNodes.vue";
 import NotificationBar from "@/components/NotificationBar.vue";
 import BaseButton from "@/components/BaseButton.vue";
 import CardBoxTransaction from "@/components/CardBoxTransaction.vue";
@@ -44,7 +45,7 @@ const transactionBarItems = computed(() => mainStore.history);
 <template>
   <LayoutAuthenticated>
     <SectionMain>
-      <SectionTitleLineWithButton
+      <!-- <SectionTitleLineWithButton
         :icon="mdiChartTimelineVariant"
         title="Overview"
         main
@@ -128,16 +129,18 @@ const transactionBarItems = computed(() => mainStore.history);
         <div v-if="chartData">
           <line-chart :data="chartData" class="h-96" />
         </div>
-      </CardBox>
+      </CardBox> -->
 
-      <SectionTitleLineWithButton :icon="mdiAccountMultiple" title="Clients" />
+      <SectionTitleLineWithButton :icon="mdiMonitor"
+        :title="'Nodes · Limit@' + formatBytes(mainStore.user?.monthly_limit) + ' / Usage@' + formatBytes(mainStore.user.monthly_usage)" />
 
       <NotificationBar color="info" :icon="mdiMonitorCellphone">
-        <b>Responsive table.</b> Collapses on mobile
+        <p><b>Username</b> <code>{{ mainStore.user?.uuid }}</code></p>
+        <p><b>Password</b> <code>{{ mainStore.user?.authkey }}</code></p>
       </NotificationBar>
 
       <CardBox has-table>
-        <TableSampleClients />
+        <TableNodes />
       </CardBox>
     </SectionMain>
   </LayoutAuthenticated>

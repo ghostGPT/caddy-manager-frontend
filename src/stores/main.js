@@ -4,29 +4,110 @@ import router from "@/router";
 
 export const useMainStore = defineStore("main", {
   persist: {
-    enabled: true
+    enabled: true,
+    strategies: [
+      {
+        key: 'main',
+        storage: localStorage,
+      },
+    ],
   },
   state: () => ({
-    userGitHubId: null,
-    userName: null,
-    userAvatar: null,
-    isAdmin: null,
-    token: null,
+    user: null,
 
     /* Field focus with ctrl+k (to register only once) */
     isFieldFocusRegistered: false,
 
     /* Sample data (commonly used) */
+    errors: [],
+    nodes: [],
+    plans: [],
+    users: [],
+
     clients: [],
     history: [],
   }),
   actions: {
+    init() {
+      if (['/login', '/oauth2-callback'].indexOf(window.location.pathname) != -1) {
+        return;
+      }
+      this.fetchCurrentUser().then(() => {
+        this.fetchNodes();
+        if (this.user?.is_admin) {
+          this.fetchPlans();
+          this.fetchUsers();
+        }
+      }).catch(() => {
+        this.setUser(null);
+        router.push({ name: "login" });
+      })
+    },
+
+    fetchCurrentUser() {
+      return new Promise((resolve, reject) => {
+        axios
+          .get(`/api/me`)
+          .then((data) => {
+            this.setUser(data);
+            resolve();
+          })
+          .catch((err) => {
+            reject(err);
+          });
+      });
+    },
+
+    async fetchNodes() {
+      let data = await axios
+        .get(`/api/node`)
+      this.nodes = data;
+    },
+
+    async fetchUsers() {
+      let data = await axios
+        .get(`/api/user`)
+      this.users = data;
+    },
+
+    fetchPlans() {
+      axios
+        .get(`/api/plan`)
+        .then((data) => {
+          this.plans = data;
+        })
+    },
+
+    pushError(msg) {
+      this.errors.push({
+        id: new Date().getTime(),
+        msg: msg,
+      });
+    },
+
+    removeError(id) {
+      this.errors = this.errors.filter((e) => e.id !== id);
+    },
+
     setUser(payload) {
-      this.userName = payload?.name;
-      this.userAvatar = payload?.avatar;
-      this.userGitHubId = payload?.github_id;
-      this.isAdmin = payload?.is_admin;
-      this.token = payload?.token;
+      if (!payload) {
+        this.nodes = []
+        this.plans = []
+        this.users = []
+      }
+      this.user = payload
+    },
+
+    createNode(payload) {
+      axios.post(`/api/node`, payload).then((data) => {
+        this.nodes.push(data);
+      })
+    },
+
+    createPlan(payload) {
+      axios.post(`/api/plan`, payload).then((data) => {
+        this.plans.push(data);
+      })
     },
 
     oauth2Login() {
@@ -36,9 +117,6 @@ export const useMainStore = defineStore("main", {
           localStorage.setItem("csrf_state_id", data.csrf_state_id);
           window.location.href = data.auth_url;
         })
-        .catch((error) => {
-          alert(error.message);
-        });
     },
 
     oauth2Callback(code, state) {
@@ -48,13 +126,17 @@ export const useMainStore = defineStore("main", {
           csrf_state: state,
           csrf_state_id: localStorage.getItem("csrf_state_id"),
         })
-        .then((data) => {
+        .then(async (data) => {
           this.setUser(data);
+          await this.fetchNodes();
           router.push("/");
         })
-        .catch((error) => {
-          alert(error.message);
-        });
+    },
+
+    async patchUser(payload) {
+      await axios
+        .patch(`/api/user`, payload)
+      await this.fetchUsers()
     }
   },
 });

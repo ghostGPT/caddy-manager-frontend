@@ -341,9 +341,9 @@ const menuClick = (event, item) => {
 </script>
 ```
 
-### resources/js/components/UserAvatarCurrentUser.vue
+### resources/js/components/user?.avatarCurrentUser.vue
 
-Let's fetch user avatar initials based on username stored in database.
+Let's fetch user avatar initials based on user?.name stored in database.
 
 ```vue
 <script setup>
@@ -351,13 +351,13 @@ import { computed } from "vue";
 import { usePage } from "@inertiajs/vue3";
 import UserAvatar from "@/components/UserAvatar.vue";
 
-const userName = computed(() => usePage().props.auth.user.name);
+const user?.name = computed(() => usePage().props.auth.user.name);
 </script>
 
 <template>
-  <UserAvatar :username="userName" api="initials">
+  <UserAvatar :name="user?.name" api="initials">
     <slot />
-  </UserAvatar>
+  </user?.avatar>
 </template>
 ```
 

@@ -6,8 +6,8 @@ const instance = axios.create();
 instance.interceptors.request.use(
     (config) => {
         const mainStore = useMainStore();
-        if (mainStore.token) {
-            config.headers.Authorization = mainStore.token;
+        if (mainStore.user?.token) {
+            config.headers.Authorization = mainStore.user?.token;
         }
         return config;
     }
@@ -16,7 +16,9 @@ instance.interceptors.request.use(
 instance.interceptors.response.use(
     (response) => {
         if (response.data?.error) {
-            throw new Error(response.data.error);
+            const mainStore = useMainStore();
+            mainStore.pushError(response.data.error);
+            return;
         }
         return response.data.data;
     }

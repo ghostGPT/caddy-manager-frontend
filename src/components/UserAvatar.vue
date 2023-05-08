@@ -2,7 +2,7 @@
 import { computed } from "vue";
 
 const props = defineProps({
-  username: {
+  name: {
     type: String,
     required: true,
   },
@@ -19,22 +19,18 @@ const props = defineProps({
 const avatar = computed(
   () =>
     props.avatar ??
-    `https://avatars.dicebear.com/api/${props.api}/${props.username.replace(
+    `https://avatars.dicebear.com/api/${props.api}/${props.name.replace(
       /[^a-z0-9]+/i,
       "-"
     )}.svg`
 );
 
-const username = computed(() => props.username);
+const name = computed(() => props.name);
 </script>
 
 <template>
   <div>
-    <img
-      :src="avatar"
-      :alt="username"
-      class="rounded-full block h-auto w-full max-w-full bg-gray-100 dark:bg-slate-800"
-    />
+    <img :src="avatar" :alt="name" class="rounded-full block h-auto w-full max-w-full bg-gray-100 dark:bg-slate-800" />
     <slot />
   </div>
 </template>

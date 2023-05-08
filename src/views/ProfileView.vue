@@ -23,7 +23,7 @@ import SectionTitleLineWithButton from "@/components/SectionTitleLineWithButton.
 const mainStore = useMainStore();
 
 const profileForm = reactive({
-  name: mainStore.userName,
+  name: mainStore.user?.name,
   email: mainStore.userEmail,
 });
 
@@ -69,9 +69,9 @@ const submitPass = () => {
             <FormControl
               v-model="profileForm.name"
               :icon="mdiAccount"
-              name="username"
+              name="user?.name"
               required
-              autocomplete="username"
+              autocomplete="user?.name"
             />
           </FormField>
           <FormField label="E-mail" help="Required. Your e-mail">
