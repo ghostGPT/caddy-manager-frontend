@@ -37,7 +37,8 @@ const confirm = () => {
 </script>
 
 <template>
-  <CardBoxModal @confirm="confirm()" button-label="Create" title="Create Plan" has-cancel v-model="showCreateModal">
+  <CardBoxModal :confirm-disabled="!form.nodes.length" @confirm="confirm()" button-label="Create" title="Create Plan"
+    has-cancel v-model="showCreateModal">
     <CardBox>
       <FormField label="Name" help="name of plan">
         <FormControl v-model="form.name" placeholder="Default Plan" />
@@ -51,7 +52,8 @@ const confirm = () => {
       </div>
       <div>
         <FormControl v-model="newNode" class="inline-block mr-4 w-10/12" placeholder="Node UUID" />
-        <BaseButton @click="form.nodes.push(newNode.trim()); newNode = ''" :icon="mdiPlus" color="contrast" />
+        <BaseButton :disabled="!newNode.trim().length" @click="form.nodes.push(newNode.trim()); newNode = ''"
+          :icon="mdiPlus" color="contrast" />
       </div>
     </CardBox>
   </CardBoxModal>
