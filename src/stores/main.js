@@ -134,9 +134,40 @@ export const useMainStore = defineStore("main", {
     },
 
     async patchUser(payload) {
+      const uuid = payload.uuid
+      delete payload.uuid
       await axios
-        .patch(`/api/user`, payload)
+        .patch(`/api/user/${uuid}`, payload)
       await this.fetchUsers()
+    },
+
+    async patchNode(payload) {
+      const uuid = payload.uuid
+      delete payload.uuid
+      await axios
+        .patch(`/api/node/${uuid}`, payload)
+      await this.fetchNodes()
+    },
+
+    async deleteNode(payload) {
+      await axios
+        .delete(`/api/node/${payload.uuid}`)
+      await this.fetchNodes()
+    },
+
+    async patchPlan(payload) {
+      const uuid = payload.uuid
+      delete payload.uuid
+      await axios
+        .patch(`/api/plan/${uuid}`, payload)
+      await this.fetchPlans()
+    },
+
+    async deletePlan(payload) {
+      await axios
+        .delete(`/api/plan/${payload.uuid}`)
+      await this.fetchPlans()
     }
   },
+
 });

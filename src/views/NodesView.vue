@@ -7,7 +7,6 @@ import {
   mdiPlus,
 } from "@mdi/js";
 import SectionMain from "@/components/SectionMain.vue";
-import NotificationBar from "@/components/NotificationBar.vue";
 import TableNodes from "@/components/TableNodes.vue";
 import CardBox from "@/components/CardBox.vue";
 import FormField from "@/components/FormField.vue";
@@ -15,7 +14,6 @@ import FormControl from "@/components/FormControl.vue";
 import LayoutAuthenticated from "@/layouts/LayoutAuthenticated.vue";
 import SectionTitleLineWithButton from "@/components/SectionTitleLineWithButton.vue";
 import BaseButton from "@/components/BaseButton.vue";
-import CardBoxComponentEmpty from "@/components/CardBoxComponentEmpty.vue";
 import CardBoxModal from "@/components/CardBoxModal.vue";
 import { useMainStore } from "@/stores/main";
 

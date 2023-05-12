@@ -1,13 +1,16 @@
 <script setup>
-import { computed, ref } from "vue";
+import { computed, reactive, ref } from "vue";
 import { useMainStore } from "@/stores/main";
-import { mdiEye, mdiTrashCan } from "@mdi/js";
+import { mdiNoteEdit, mdiTrashCan, mdiPlus } from "@mdi/js";
 import CardBoxModal from "@/components/CardBoxModal.vue";
 import TableCheckboxCell from "@/components/TableCheckboxCell.vue";
 import BaseLevel from "@/components/BaseLevel.vue";
 import BaseButtons from "@/components/BaseButtons.vue";
 import BaseButton from "@/components/BaseButton.vue";
 import UserAvatar from "@/components/UserAvatar.vue";
+import CardBox from "@/components/CardBox.vue";
+import FormField from "@/components/FormField.vue";
+import FormControl from "@/components/FormControl.vue";
 
 defineProps({
   checkable: Boolean,
@@ -70,17 +73,62 @@ const checked = (isChecked, client) => {
     );
   }
 };
+
+const newNode = ref("");
+
+const form = reactive({
+  uuid: "",
+  name: "",
+  description: "",
+  nodes: [],
+});
+
+const confirm = () => {
+  mainStore.patchPlan(form);
+  isModalActive.value = false;
+};
+
+const itemToDelete = ref(null);
+
+const confirmDelete = () => {
+  mainStore.deletePlan(itemToDelete.value);
+  isModalDangerActive.value = false;
+};
+
+const onUpdate = (payload) => {
+  form.uuid = payload.plan.uuid;
+  form.name = payload.plan.name;
+  form.description = payload.plan.description;
+  form.nodes = payload.nodes.map((n) => n.uuid);
+  isModalActive.value = true;
+}
 </script>
 
 <template>
-  <CardBoxModal v-model="isModalActive" title="Sample modal">
-    <p>Lorem ipsum dolor sit amet <b>adipiscing elit</b></p>
-    <p>This is sample modal</p>
+  <CardBoxModal :confirm-disabled="!form.nodes.length" @confirm="confirm()" button-label="Update" title="Update Plan"
+    has-cancel v-model="isModalActive">
+    <CardBox>
+      <FormField label="Name" help="name of plan">
+        <FormControl v-model="form.name" placeholder="Default Plan" />
+      </FormField>
+      <FormField label="Description" help="description of plan">
+        <FormControl v-model="form.description" placeholder="Plan for everyone" />
+      </FormField>
+      <div v-for="(item, index) in form.nodes">
+        <FormControl disabled class="inline-block mr-4 w-10/12" v-model="form.nodes[index]" placeholder="Node UUID" />
+        <BaseButton @click="form.nodes.splice(index, 1)" :icon="mdiMinus" color="danger" />
+      </div>
+      <div>
+        <FormControl v-model="newNode" class="inline-block mr-4 w-10/12" placeholder="Node UUID" />
+        <BaseButton :disabled="!newNode.trim().length" @click="form.nodes.push(newNode.trim()); newNode = ''"
+          :icon="mdiPlus" color="contrast" />
+      </div>
+    </CardBox>
   </CardBoxModal>
 
-  <CardBoxModal v-model="isModalDangerActive" title="Please confirm" button="danger" has-cancel>
-    <p>Lorem ipsum dolor sit amet <b>adipiscing elit</b></p>
-    <p>This is sample modal</p>
+  <CardBoxModal @confirm="confirmDelete()" v-model="isModalDangerActive" button-label="Delete" title="Confirm Delete"
+    button="denger" has-cancel>
+    <p>Confirm to delete plan: {{ itemToDelete?.name }}</p>
   </CardBoxModal>
 
   <div v-if="checkedRows.length" class="p-3 bg-gray-100/50 dark:bg-slate-800">
@@ -122,8 +170,9 @@ const checked = (isChecked, client) => {
         </td>
         <td class="before:hidden lg:w-1 whitespace-nowrap">
           <BaseButtons type="justify-start lg:justify-end" no-wrap>
-            <BaseButton color="info" :icon="mdiEye" small @click="isModalActive = true" />
-            <BaseButton color="danger" :icon="mdiTrashCan" small @click="isModalDangerActive = true" />
+            <BaseButton color="info" :icon="mdiNoteEdit" small @click="onUpdate(client)" />
+            <BaseButton color="danger" :icon="mdiTrashCan" small
+              @click="itemToDelete = client.plan; isModalDangerActive = true" />
           </BaseButtons>
         </td>
       </tr>

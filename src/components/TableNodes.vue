@@ -1,13 +1,16 @@
 <script setup>
-import { computed, ref } from "vue";
+import { computed, reactive, ref } from "vue";
 import { useMainStore } from "@/stores/main";
-import { mdiEye, mdiTrashCan } from "@mdi/js";
+import { mdiNoteEdit, mdiTrashCan } from "@mdi/js";
 import CardBoxModal from "@/components/CardBoxModal.vue";
 import TableCheckboxCell from "@/components/TableCheckboxCell.vue";
 import BaseLevel from "@/components/BaseLevel.vue";
 import BaseButtons from "@/components/BaseButtons.vue";
 import BaseButton from "@/components/BaseButton.vue";
 import UserAvatar from "@/components/UserAvatar.vue";
+import CardBox from "@/components/CardBox.vue";
+import FormField from "@/components/FormField.vue";
+import FormControl from "@/components/FormControl.vue";
 
 defineProps({
   checkable: Boolean,
@@ -17,9 +20,9 @@ const mainStore = useMainStore();
 
 const items = computed(() => mainStore.nodes);
 
-const isModalActive = ref(false);
+const showDeleteModal = ref(false);
 
-const isModalDangerActive = ref(false);
+const showUpdateModal = ref(false);
 
 const perPage = ref(5);
 
@@ -70,17 +73,53 @@ const checked = (isChecked, client) => {
     );
   }
 };
+
+const form = reactive({
+  uuid: "",
+  name: "",
+  description: "",
+  server: "",
+});
+
+const showUpdate = (client) => {
+  form.uuid = client.uuid;
+  form.name = client.name;
+  form.description = client.description;
+  form.server = client.server;
+  showUpdateModal.value = true;
+};
+
+const itemToDelete = ref({})
+
+const doUpdate = async () => {
+  await mainStore.patchNode(form);
+  showUpdateModal.value = false;
+};
+
+const doDelete = async () => {
+  await mainStore.deleteNode(itemToDelete.value);
+  showDeleteModal.value = false;
+}
 </script>
 
 <template>
-  <CardBoxModal v-model="isModalActive" title="Sample modal">
-    <p>Lorem ipsum dolor sit amet <b>adipiscing elit</b></p>
-    <p>This is sample modal</p>
+  <CardBoxModal @confirm="doUpdate()" button-label="Update" title="Update Node" has-cancel v-model="showUpdateModal">
+    <CardBox>
+      <FormField label="Name" help="name of server">
+        <FormControl v-model="form.name" placeholder="Earth Server" />
+      </FormField>
+      <FormField label="Description" help="description of server">
+        <FormControl v-model="form.description" placeholder="Server hosted on earth" />
+      </FormField>
+      <FormField label="Server" help="Domain of server">
+        <FormControl v-model="form.server" placeholder="example.com" />
+      </FormField>
+    </CardBox>
   </CardBoxModal>
 
-  <CardBoxModal v-model="isModalDangerActive" title="Please confirm" button="danger" has-cancel>
-    <p>Lorem ipsum dolor sit amet <b>adipiscing elit</b></p>
-    <p>This is sample modal</p>
+  <CardBoxModal @confirm="doDelete()" v-model="showDeleteModal" button-label="Delete" title="Confirm Delete"
+    button="danger" has-cancel>
+    <p>Confirm to delete node: {{ itemToDelete.name }}</p>
   </CardBoxModal>
 
   <div v-if="checkedRows.length" class="p-3 bg-gray-100/50 dark:bg-slate-800">
@@ -122,8 +161,8 @@ const checked = (isChecked, client) => {
         </td>
         <td class="before:hidden lg:w-1 whitespace-nowrap">
           <BaseButtons type="justify-start lg:justify-end" no-wrap>
-            <BaseButton color="info" :icon="mdiEye" small @click="isModalActive = true" />
-            <BaseButton color="danger" :icon="mdiTrashCan" small @click="isModalDangerActive = true" />
+            <BaseButton color="info" :icon="mdiNoteEdit" small @click="showUpdate(client)" />
+            <BaseButton color="danger" :icon="mdiTrashCan" small @click="itemToDelete = client; showDeleteModal = true" />
           </BaseButtons>
         </td>
       </tr>
