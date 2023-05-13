@@ -1,16 +1,16 @@
 <script setup>
 import { computed, reactive, ref } from "vue";
 import { useMainStore } from "@/stores/main";
-import { mdiNoteEdit, mdiTrashCan } from "@mdi/js";
+import { mdiNoteEdit, mdiTrashCan, mdiCheckCircle, mdiInformationSlabCircle } from "@mdi/js";
 import CardBoxModal from "@/components/CardBoxModal.vue";
 import TableCheckboxCell from "@/components/TableCheckboxCell.vue";
 import BaseLevel from "@/components/BaseLevel.vue";
 import BaseButtons from "@/components/BaseButtons.vue";
 import BaseButton from "@/components/BaseButton.vue";
-import UserAvatar from "@/components/UserAvatar.vue";
 import CardBox from "@/components/CardBox.vue";
 import FormField from "@/components/FormField.vue";
 import FormControl from "@/components/FormControl.vue";
+import BaseIcon from "./BaseIcon.vue";
 
 defineProps({
   checkable: Boolean,
@@ -145,7 +145,8 @@ const doDelete = async () => {
       <tr v-for="client in itemsPaginated" :key="client.uuid">
         <TableCheckboxCell v-if="checkable" @checked="checked($event, client)" />
         <td class="border-b-0 lg:w-6 before:hidden">
-          <UserAvatar :name="client.name" class="w-24 h-24 mx-auto lg:w-6 lg:h-6" />
+          <BaseIcon v-if="client.online" :path="mdiCheckCircle" class="text-green-600"/>
+          <BaseIcon v-else :path="mdiInformationSlabCircle" class="text-red-600" />
         </td>
         <td data-label="Name">
           {{ client.name }}

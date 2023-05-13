@@ -61,7 +61,13 @@ export const useMainStore = defineStore("main", {
     async fetchNodes() {
       let data = await axios
         .get(`/api/node`)
-      this.nodes = data;
+
+      let nodes = data.nodes;
+      nodes.forEach(n => {
+        n.online = data.nodes_online[n.uuid]
+      });
+
+      this.nodes = nodes;
     },
 
     async fetchUsers() {
