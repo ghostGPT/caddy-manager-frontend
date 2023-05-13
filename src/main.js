@@ -48,6 +48,7 @@ if (
 }
 
 axios.get("/api/site/config").then((data) => {
+  mainStore.version = data.data.data.version;
   const defaultDocumentTitle = data.data.data.site_name;
 
   router.beforeEach((to, from, next) => {

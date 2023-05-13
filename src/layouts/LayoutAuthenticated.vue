@@ -66,7 +66,7 @@ const menuClick = (event, item) => {
         @aside-lg-close-click="isAsideLgActive = false" />
       <slot />
       <FooterBar>
-        to the world
+        to the world ver.{{ mainStore.version }}
       </FooterBar>
     </div>
   </div>

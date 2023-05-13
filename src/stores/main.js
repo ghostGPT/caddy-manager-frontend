@@ -13,6 +13,8 @@ export const useMainStore = defineStore("main", {
     ],
   },
   state: () => ({
+    version: "dev",
+
     user: null,
 
     /* Field focus with ctrl+k (to register only once) */
