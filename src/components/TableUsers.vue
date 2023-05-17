@@ -20,7 +20,7 @@ const mainStore = useMainStore();
 
 const items = computed(() => mainStore.users);
 
-const perPage = ref(5);
+const perPage = ref(20);
 
 const currentPage = ref(0);
 

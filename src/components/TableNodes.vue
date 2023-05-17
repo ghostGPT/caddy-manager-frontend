@@ -24,7 +24,7 @@ const showDeleteModal = ref(false);
 
 const showUpdateModal = ref(false);
 
-const perPage = ref(5);
+const perPage = ref(20);
 
 const currentPage = ref(0);
 
