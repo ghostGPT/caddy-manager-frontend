@@ -1,9 +1,7 @@
 <script setup>
-import { reactive, ref } from "vue";
+import { onMounted, reactive, ref } from "vue";
 import {
-  mdiMonitorCellphone,
   mdiTableBorder,
-  mdiTableOff,
   mdiPlus,
 } from "@mdi/js";
 import SectionMain from "@/components/SectionMain.vue";
@@ -19,6 +17,10 @@ import { useMainStore } from "@/stores/main";
 
 const showCreateModal = ref(false);
 const mainStore = useMainStore();
+
+onMounted(() => {
+  mainStore.fetchNodes();
+});
 
 const form = reactive({
   name: "",

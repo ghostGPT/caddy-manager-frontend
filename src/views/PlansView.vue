@@ -1,5 +1,5 @@
 <script setup>
-import { reactive, ref } from "vue";
+import { onMounted, reactive, ref } from "vue";
 import {
   mdiMonitorCellphone,
   mdiTableBorder,
@@ -18,9 +18,13 @@ import BaseButton from "@/components/BaseButton.vue";
 import CardBoxModal from "@/components/CardBoxModal.vue";
 import { useMainStore } from "@/stores/main";
 
-const showCreateModal = ref(false);
 const mainStore = useMainStore();
 
+onMounted(() => {
+  mainStore.fetchPlans();
+});
+
+const showCreateModal = ref(false);
 const newNode = ref("");
 
 const form = reactive({

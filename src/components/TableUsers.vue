@@ -108,6 +108,7 @@ const confirm = async () => {
         <th>Plan</th>
         <th>Usage</th>
         <th>Limit</th>
+        <th>Latest Use</th>
         <th />
       </tr>
     </thead>
@@ -131,6 +132,9 @@ const confirm = async () => {
         </td>
         <td data-label="Limit">
           {{ formatBytes(client.monthly_limit) }}
+        </td>
+        <td data-label="Latest">
+          {{ timeago(client.updated_at) }}
         </td>
         <td class="before:hidden lg:w-1 whitespace-nowrap">
           <BaseButtons type="justify-start lg:justify-end" no-wrap>

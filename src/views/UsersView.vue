@@ -7,6 +7,14 @@ import TableUsers from "@/components/TableUsers.vue";
 import CardBox from "@/components/CardBox.vue";
 import LayoutAuthenticated from "@/layouts/LayoutAuthenticated.vue";
 import SectionTitleLineWithButton from "@/components/SectionTitleLineWithButton.vue";
+import { onMounted } from "vue";
+import { useMainStore } from "@/stores/main";
+
+const mainStore = useMainStore();
+
+onMounted(() => {
+  mainStore.fetchUsers();
+});
 </script>
 
 <template>

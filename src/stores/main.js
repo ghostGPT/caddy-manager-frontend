@@ -36,10 +36,6 @@ export const useMainStore = defineStore("main", {
       }
       this.fetchCurrentUser().then(() => {
         this.fetchNodes();
-        if (this.user?.is_admin) {
-          this.fetchPlans();
-          this.fetchUsers();
-        }
       }).catch(() => {
         this.setUser(null);
         router.push({ name: "login" });
