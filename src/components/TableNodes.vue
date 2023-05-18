@@ -79,6 +79,7 @@ const form = reactive({
   name: "",
   description: "",
   server: "",
+  ip: null,
 });
 
 const showUpdate = (client) => {
@@ -86,12 +87,14 @@ const showUpdate = (client) => {
   form.name = client.name;
   form.description = client.description;
   form.server = client.server;
+  form.ip = client.ip;
   showUpdateModal.value = true;
 };
 
 const itemToDelete = ref({})
 
 const doUpdate = async () => {
+  form.ip = form.ip.trim() == "" ? null : form.ip.trim();
   await mainStore.patchNode(form);
   showUpdateModal.value = false;
 };
@@ -113,6 +116,9 @@ const doDelete = async () => {
       </FormField>
       <FormField label="Server" help="Domain of server">
         <FormControl v-model="form.server" placeholder="example.com" />
+      </FormField>
+      <FormField label="IP" help="IP of server(Optional)">
+        <FormControl v-model="form.ip" placeholder="1.1.1.1" />
       </FormField>
     </CardBox>
   </CardBoxModal>
@@ -138,6 +144,7 @@ const doDelete = async () => {
         <th>Description</th>
         <th v-if="mainStore.user?.is_admin">UUID</th>
         <th>Server</th>
+        <th>IP</th>
         <th />
       </tr>
     </thead>
@@ -145,7 +152,7 @@ const doDelete = async () => {
       <tr v-for="client in itemsPaginated" :key="client.uuid">
         <TableCheckboxCell v-if="checkable" @checked="checked($event, client)" />
         <td class="border-b-0 lg:w-6 before:hidden">
-          <BaseIcon v-if="client.online" :path="mdiCheckCircle" class="text-green-600"/>
+          <BaseIcon v-if="client.online" :path="mdiCheckCircle" class="text-green-600" />
           <BaseIcon v-else :path="mdiInformationSlabCircle" class="text-red-600" />
         </td>
         <td data-label="Name">
@@ -159,6 +166,9 @@ const doDelete = async () => {
         </td>
         <td data-label="Server">
           {{ client.server }}
+        </td>
+        <td data-label="IP">
+          {{ client.ip }}
         </td>
         <td class="before:hidden lg:w-1 whitespace-nowrap">
           <BaseButtons type="justify-start lg:justify-end" no-wrap>

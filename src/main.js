@@ -2,6 +2,7 @@ import { createApp } from "vue";
 import { createPinia } from "pinia";
 import axios from "axios";
 import piniaPersist from 'pinia-plugin-persist'
+import { VueClipboard } from '@soerenmartius/vue3-clipboard'
 
 import App from "./App.vue";
 import router from "./router";
@@ -53,7 +54,7 @@ app.mixin({
 /* Init Pinia */
 const pinia = createPinia();
 pinia.use(piniaPersist)
-app.use(pinia);
+app.use(pinia).use(VueClipboard);
 
 /* Init Pinia stores */
 const mainStore = useMainStore(pinia);

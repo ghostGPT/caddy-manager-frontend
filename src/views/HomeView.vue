@@ -31,6 +31,10 @@ const fillChartData = () => {
   chartData.value = chartConfig.sampleChartData();
 };
 
+const baseSubscribeLink = computed(() => {
+  return window.location.origin + '/api/subscribe-link/' + mainStore.user?.uuid + '/' + mainStore.user?.authkey
+})
+
 onMounted(() => {
   fillChartData();
 });
@@ -135,6 +139,12 @@ const transactionBarItems = computed(() => mainStore.history);
         :title="'Nodes · Limit@' + formatBytes(mainStore.user?.monthly_limit) + ' / Usage@' + formatBytes(mainStore.user.monthly_usage)" />
 
       <NotificationBar color="info" :icon="mdiMonitorCellphone">
+        <p class="mb-3">
+          <BaseButton class="mr-4" v-clipboard:copy="baseSubscribeLink + '/shadowrocket'" color="lightDark"
+            label="Copy Shadowrocket Subscribe Link" />
+          <BaseButton v-clipboard:copy="baseSubscribeLink + '/shadowrocket'" color="lightDark"
+            label="Copy Shadowrocket Qv2ray/SagerNet Link" />
+        </p>
         <p><b>Username</b> <code>{{ mainStore.user?.uuid }}</code></p>
         <p><b>Password</b> <code>{{ mainStore.user?.authkey }}</code></p>
       </NotificationBar>

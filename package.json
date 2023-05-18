@@ -10,6 +10,7 @@
   "dependencies": {
     "@mdi/js": "^7.0.96",
     "@rushstack/eslint-patch": "^1.1.4",
+    "@soerenmartius/vue3-clipboard": "^0.1.2",
     "axios": "^0.27.0",
     "chart.js": "^3.6.0",
     "numeral": "^2.0.6",

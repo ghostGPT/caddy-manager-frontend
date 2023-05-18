@@ -26,9 +26,11 @@ const form = reactive({
   name: "",
   description: "",
   server: "",
+  ip: null,
 });
 
 const confirm = () => {
+  form.ip = form.ip.trim() == "" ? null : form.ip.trim();
   mainStore.createNode(form);
   showCreateModal.value = false;
 };
@@ -46,6 +48,9 @@ const confirm = () => {
       </FormField>
       <FormField label="Server" help="Domain of server">
         <FormControl v-model="form.server" placeholder="example.com" />
+      </FormField>
+      <FormField label="IP" help="IP of server(Optional)">
+        <FormControl v-model="form.ip" placeholder="1.1.1.1" />
       </FormField>
     </CardBox>
   </CardBoxModal>
