@@ -142,8 +142,8 @@ const transactionBarItems = computed(() => mainStore.history);
         <p class="mb-3">
           <BaseButton class="mr-4" v-clipboard:copy="baseSubscribeLink + '/shadowrocket'" color="lightDark"
             label="Copy Shadowrocket Subscribe Link" />
-          <BaseButton v-clipboard:copy="baseSubscribeLink + '/shadowrocket'" color="lightDark"
-            label="Copy Shadowrocket Qv2ray/SagerNet Link" />
+          <BaseButton v-clipboard:copy="baseSubscribeLink + '/normal'" color="lightDark"
+            label="Copy Qv2ray/SagerNet Subscribe Link" />
         </p>
         <p><b>Username</b> <code>{{ mainStore.user?.uuid }}</code></p>
         <p><b>Password</b> <code>{{ mainStore.user?.authkey }}</code></p>
