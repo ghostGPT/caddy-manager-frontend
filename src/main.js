@@ -73,8 +73,7 @@ if (
 }
 
 axios.get("/api/site/config").then((data) => {
-  mainStore.version = data.data.data.version;
-  const defaultDocumentTitle = data.data.data.site_name;
+  mainStore.config = data.data.data;
 
   router.beforeEach((to, from, next) => {
     if (["login", "oauth2-callback"].indexOf(to.name) == -1 && !mainStore.user?.token) {
@@ -86,8 +85,8 @@ axios.get("/api/site/config").then((data) => {
 
   router.afterEach((to) => {
     document.title = to.meta?.title
-      ? `${to.meta.title} — ${defaultDocumentTitle}`
-      : defaultDocumentTitle;
+      ? `${to.meta.title} — ${mainStore.config.site_name}`
+      : mainStore.config.site_name;
   });
 
   app.use(router).mount("#app");

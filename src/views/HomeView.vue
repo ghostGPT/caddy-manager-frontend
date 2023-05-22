@@ -2,14 +2,8 @@
 import { computed, ref, onMounted } from "vue";
 import { useMainStore } from "@/stores/main";
 import {
-  mdiAccountMultiple,
-  mdiCartOutline,
-  mdiChartTimelineVariant,
-  mdiMonitorCellphone,
-  mdiMonitor,
-  mdiReload,
-  mdiGithub,
-  mdiChartPie,
+  mdiEye,
+  mdiMonitor
 } from "@mdi/js";
 import * as chartConfig from "@/components/Charts/chart.config.js";
 import LineChart from "@/components/Charts/LineChart.vue";
@@ -17,6 +11,7 @@ import SectionMain from "@/components/SectionMain.vue";
 import CardBoxWidget from "@/components/CardBoxWidget.vue";
 import CardBox from "@/components/CardBox.vue";
 import TableNodes from "@/components/TableNodes.vue";
+import TableRanks from "@/components/TableRanks.vue";
 import NotificationBar from "@/components/NotificationBar.vue";
 import BaseButton from "@/components/BaseButton.vue";
 import CardBoxTransaction from "@/components/CardBoxTransaction.vue";
@@ -151,6 +146,11 @@ const transactionBarItems = computed(() => mainStore.history);
 
       <CardBox has-table>
         <TableNodes />
+      </CardBox>
+
+      <SectionTitleLineWithButton :icon="mdiEye" :title="'Site Rank (All Users in '+ mainStore.config.site_name +')'" />
+      <CardBox class="mt-5" has-table>
+        <TableRanks />
       </CardBox>
     </SectionMain>
   </LayoutAuthenticated>

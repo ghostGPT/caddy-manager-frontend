@@ -13,7 +13,9 @@ export const useMainStore = defineStore("main", {
     ],
   },
   state: () => ({
-    version: "dev",
+    config: {
+      version: "dev",
+    },
 
     user: null,
 
@@ -25,6 +27,7 @@ export const useMainStore = defineStore("main", {
     nodes: [],
     plans: [],
     users: [],
+    ranks: [],
 
     clients: [],
     history: [],
@@ -35,6 +38,7 @@ export const useMainStore = defineStore("main", {
         return;
       }
       this.fetchCurrentUser().then(() => {
+        this.fetchRanks();
         this.fetchNodes();
       }).catch(() => {
         this.setUser(null);
@@ -66,6 +70,13 @@ export const useMainStore = defineStore("main", {
       });
 
       this.nodes = nodes;
+    },
+
+    async fetchRanks() {
+      let data = await axios
+        .get(`/api/rank`)
+
+      this.ranks = data;
     },
 
     async fetchUsers() {
