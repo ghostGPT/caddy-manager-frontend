@@ -79,13 +79,13 @@ const checked = (isChecked, client) => {
       </tr>
     </thead>
     <tbody>
-      <tr v-for="client in itemsPaginated" :key="client.id">
+      <tr v-for="client in  itemsPaginated " :key="client.id">
         <TableCheckboxCell v-if="checkable" @checked="checked($event, client)" />
         <td class="border-b-0 lg:w-6 before:hidden">
           <UserAvatar :name="client.hostname" class="w-24 h-24 mx-auto lg:w-6 lg:h-6" />
         </td>
         <td data-label="Hostname">
-          {{ client.hostname }}
+          {{ client.hostname }} <span class="bg-green-500 font-bold px-2 py-1/2 rounded-full" v-if="client.tag">{{ client.tag }}</span>
         </td>
         <td data-label="Usage">
           {{ formatBytes(client.total_usage) }}
@@ -99,7 +99,7 @@ const checked = (isChecked, client) => {
   <div class="p-3 lg:px-6 border-t border-gray-100 dark:border-slate-800">
     <BaseLevel>
       <BaseButtons>
-        <BaseButton v-for="page in pagesList" :key="page" :active="page === currentPage" :label="page + 1"
+        <BaseButton v-for=" page  in  pagesList " :key="page" :active="page === currentPage" :label="page + 1"
           :color="page === currentPage ? 'lightDark' : 'whiteDark'" small @click="currentPage = page" />
       </BaseButtons>
       <small>Page {{ currentPageHuman }} of {{ numPages }}</small>

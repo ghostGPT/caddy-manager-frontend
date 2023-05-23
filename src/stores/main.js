@@ -76,6 +76,14 @@ export const useMainStore = defineStore("main", {
       let data = await axios
         .get(`/api/rank`)
 
+      for (let i = 0; i < data.length; i++) {
+        let r = data[i];
+        let tag = r.tag;
+        r = r.usage;
+        r.tag = tag;
+        data[i] = r;
+      }
+
       this.ranks = data;
     },
 
