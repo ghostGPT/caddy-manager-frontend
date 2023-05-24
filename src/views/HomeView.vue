@@ -137,6 +137,8 @@ const transactionBarItems = computed(() => mainStore.history);
         <p class="mb-3">
           <BaseButton class="mr-4" v-clipboard:copy="baseSubscribeLink + '/shadowrocket'" color="lightDark"
             label="Copy Shadowrocket Subscribe Link" />
+          <BaseButton class="mr-4" v-clipboard:copy="baseSubscribeLink + '/nekoray'" color="lightDark"
+            label="Copy NekoRay / NekoBox Subscribe Link" />
           <BaseButton v-clipboard:copy="baseSubscribeLink + '/normal'" color="lightDark"
             label="Copy Qv2ray/SagerNet Subscribe Link" />
         </p>
@@ -148,7 +150,7 @@ const transactionBarItems = computed(() => mainStore.history);
         <TableNodes />
       </CardBox>
 
-      <SectionTitleLineWithButton :icon="mdiEye" :title="'Site Rank (All Users in '+ mainStore.config.site_name +')'" />
+      <SectionTitleLineWithButton :icon="mdiEye" :title="'Site Rank (All Users in ' + mainStore.config.site_name + ')'" />
       <CardBox class="mt-5" has-table>
         <TableRanks />
       </CardBox>
