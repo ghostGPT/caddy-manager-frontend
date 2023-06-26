@@ -30,7 +30,7 @@ const form = reactive({
 });
 
 const confirm = () => {
-  form.ip = form.ip.trim() == "" ? null : form.ip.trim();
+  form.ip = (form.ip ?? '').trim() == '' ? null : form.ip.trim();
   mainStore.createNode(form);
   showCreateModal.value = false;
 };

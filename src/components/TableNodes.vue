@@ -94,7 +94,7 @@ const showUpdate = (client) => {
 const itemToDelete = ref({})
 
 const doUpdate = async () => {
-  form.ip = form.ip.trim() == "" ? null : form.ip.trim();
+  form.ip = (form.ip ?? '').trim() == '' ? null : form.ip.trim();
   await mainStore.patchNode(form);
   showUpdateModal.value = false;
 };
